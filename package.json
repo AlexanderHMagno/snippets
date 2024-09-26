@@ -12,9 +12,11 @@
     "@monaco-editor/react": "^4.6.0",
     "@prisma/client": "5.19.1",
     "next": "14.2.13",
+    "pnpm": "^9.11.0",
     "prisma": "^5.19.1",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "vercel": "^37.6.0"
   },
   "devDependencies": {
     "@types/node": "^20",
