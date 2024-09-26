@@ -20,7 +20,11 @@ const NewSnippet: React.FC = () => {
 
   return (
     <div className="bg-white p-6 rounded shadow-md w-full max-w-md">
-      <h3 className="text-xl font-bold mb-4">Create Snippet</h3>
+      <div className="mt-10 flex justify-around">
+        <h3 className="text-xl font-bold mb-4">Create Snippet</h3>
+        <GeneralButton href="/" text="Go back" />
+      </div>
+
       <form action={handleSubmit}>
         <div className="mb-4">
           <label
@@ -57,9 +61,6 @@ const NewSnippet: React.FC = () => {
           Save
         </button>
       </form>
-      <div className="mt-10 flex justify-end">
-        <GeneralButton href="/" text="Go back" />
-      </div>
     </div>
   );
 };

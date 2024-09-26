@@ -1,6 +1,5 @@
 import MonacoEditor from '@/components/MonacoEditor';
 import { db } from '@/db';
-import GeneralButton from '@/components/GeneralButton';
 import { notFound } from 'next/navigation';
 import React from 'react';
 
@@ -22,12 +21,8 @@ export default async function EditSnippet(props: Props) {
 
   return (
     <div>
-      <h1 className="text-3xl mb-10">{snippet.title}</h1>
       <div>
         <MonacoEditor snippet={snippet} />
-      </div>
-      <div className="flex justify-end">
-        <GeneralButton href={`/snippets/${snippet.id}`} text="Go Back" />
       </div>
     </div>
   );

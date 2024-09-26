@@ -4,6 +4,7 @@ import { db } from '@/db';
 import Link from 'next/link';
 import React from 'react';
 import type { Snippet } from '@prisma/client';
+import * as action from '@/actions';
 
 type Props = {
   params: {
@@ -17,29 +18,28 @@ const SingleSnippetPage = async (props: Props) => {
     where: { id: Number(id) },
   })) as Snippet;
 
+  const deleteSnippetAction = action.deleteSnippet.bind(null, Number(id));
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4 w-full">
       <title>{data?.title}</title>
-      <h1 className="text-3xl font-bold mb-4 text-gray-800">{data?.title}</h1>
       <div className="w-full max-w-2xl bg-white p-6 rounded-lg shadow-md">
         <MonacoEditor snippet={data} readOnly={true} width="100%" />
 
-        <div className="flex space-x-4 mb-4">
-          <Link
-            href={`${data?.id}/edit`}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            Edit
-          </Link>
-          <Link
-            href="/delete"
-            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
-          >
-            Delete
-          </Link>
+        <div className="flex space-x-4 mb-4 justify-end pt-10">
+          <GeneralButton href="/" text="Go back" />
+          <GeneralButton href={`${data?.id}/edit`} text="Edit" />
+
+          <form action={deleteSnippetAction}>
+            <button
+              type="submit"
+              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+            >
+              Delete
+            </button>
+          </form>
         </div>
       </div>
-      <GeneralButton href="/" text="Go back" />
     </div>
   );
 };
