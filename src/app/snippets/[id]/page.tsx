@@ -1,7 +1,6 @@
 import GeneralButton from '@/components/GeneralButton';
 import MonacoEditor from '@/components/MonacoEditor';
 import { db } from '@/db';
-import Link from 'next/link';
 import React from 'react';
 import type { Snippet } from '@prisma/client';
 import * as action from '@/actions';
