@@ -21,12 +21,19 @@ export async function deleteSnippet(id: number) {
   redirect('/');
 }
 
-export async function createNewSnippet(formState: any, formData: FormData) {
-  //Check Users input
+interface formState {
+  message: string;
+}
+
+export async function createNewSnippet(state: formState, formData: FormData) {
+  // Default state if undefined
+  const currentState = state || { message: 'Something Went Wrong' };
+
+  // Check Users input
   const title = formData.get('title');
   const code = formData.get('code');
 
-  //Validation
+  // Validation
   if (typeof title !== 'string' || title.length < 3) {
     return { message: 'Please enter a valid title' };
   }
@@ -35,9 +42,12 @@ export async function createNewSnippet(formState: any, formData: FormData) {
     return { message: 'Please enter a valid code' };
   }
 
-  //Create new entry
+  // Create new entry
   if (title && code) {
     await db.snippet.create({ data: { title, code } });
+    // Assuming redirect is a function that you have available
     redirect('/');
   }
+
+  return currentState;
 }
