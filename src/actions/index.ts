@@ -20,3 +20,24 @@ export async function deleteSnippet(id: number) {
 
   redirect('/');
 }
+
+export async function createNewSnippet(formState: any, formData: FormData) {
+  //Check Users input
+  const title = formData.get('title');
+  const code = formData.get('code');
+
+  //Validation
+  if (typeof title !== 'string' || title.length < 3) {
+    return { message: 'Please enter a valid title' };
+  }
+
+  if (typeof code !== 'string' || code.length < 10) {
+    return { message: 'Please enter a valid code' };
+  }
+
+  //Create new entry
+  if (title && code) {
+    await db.snippet.create({ data: { title, code } });
+    redirect('/');
+  }
+}

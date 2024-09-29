@@ -1,22 +1,16 @@
+'use client';
+import * as actions from '@/actions';
 import GeneralButton from '@/components/GeneralButton';
-import { db } from '@/db';
-import { redirect } from 'next/navigation';
+import { useFormState } from 'react-dom';
 
+const initialState = {
+  message: '',
+};
 const NewSnippet: React.FC = () => {
-  async function handleSubmit(formData: FormData) {
-    //This will be a server component
-    'use server';
-
-    //Check Users input
-    const title = formData.get('title') as string;
-    const code = formData.get('code') as string;
-
-    //Create new entry
-    if (title && code) {
-      await db.snippet.create({ data: { title, code } });
-      redirect('/');
-    }
-  }
+  const [state, formAction] = useFormState(
+    actions.createNewSnippet,
+    initialState
+  );
 
   return (
     <div className="bg-white p-6 rounded shadow-md w-full max-w-md">
@@ -25,7 +19,7 @@ const NewSnippet: React.FC = () => {
         <GeneralButton href="/" text="Go back" />
       </div>
 
-      <form action={handleSubmit}>
+      <form action={formAction}>
         <div className="mb-4">
           <label
             htmlFor="title"
@@ -54,6 +48,9 @@ const NewSnippet: React.FC = () => {
             rows={6}
           />
         </div>
+        {state?.message && (
+          <div className="mt-2 text-red-600 pan">{state.message}</div>
+        )}
         <button
           type="submit"
           className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
