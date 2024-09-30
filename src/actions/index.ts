@@ -1,6 +1,7 @@
 //To indicate these are server actions to mutate data
 'use server';
 
+import { revalidatePath } from 'next/cache';
 import { db } from '@/db';
 import { redirect } from 'next/navigation';
 
@@ -11,13 +12,14 @@ export async function patchSnippet(id: number, title: string, code: string) {
   });
 
   if (saved) {
+    revalidatePath(`/snippets/${id}`);
     redirect(`/snippets/${id}`);
   }
 }
 
 export async function deleteSnippet(id: number) {
   await db.snippet.delete({ where: { id } });
-
+  revalidatePath('/');
   redirect('/');
 }
 
@@ -42,12 +44,21 @@ export async function createNewSnippet(state: formState, formData: FormData) {
     return { message: 'Please enter a valid code' };
   }
 
-  // Create new entry
-  if (title && code) {
+  //If there is something wrong with the creation process we have to send this
+  //information back
+  try {
     await db.snippet.create({ data: { title, code } });
-    // Assuming redirect is a function that you have available
-    redirect('/');
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return { message: error.message };
+    } else {
+      return currentState;
+    }
   }
+  revalidatePath('/');
+  redirect('/');
+}
 
-  return currentState;
+export async function getAllSnippets() {
+  return await db.snippet.findMany();
 }

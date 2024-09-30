@@ -44,3 +44,11 @@ const SingleSnippetPage = async (props: Props) => {
 };
 
 export default SingleSnippetPage;
+
+export async function generateStaticParams() {
+  const snippets = await action.getAllSnippets();
+
+  return snippets.map((snippet) => ({
+    id: snippet.id.toString(),
+  }));
+}

@@ -1,8 +1,8 @@
+import * as actions from '@/actions';
 import GeneralButton from '@/components/GeneralButton';
-import { db } from '@/db';
 
 export default async function Home() {
-  const data = await db.snippet.findMany();
+  const data = await actions.getAllSnippets();
 
   const displayFunctions = data.map((code) => {
     return (
